@@ -64,3 +64,16 @@ export const selectPosts = async () => {
     return [];
   }
 };
+export const selectPost = async (slug: string) => {
+  const { data, error } = await supabase
+    .from("posts")
+    .select()
+    .eq("id", slug)
+    .limit(1);
+  console.log(data);
+  if (data && data.length === 1) {
+    return { ...data[0], slug: data[0].id, eyecatch: data[0].eyecatch_url };
+  } else {
+    return null;
+  }
+};

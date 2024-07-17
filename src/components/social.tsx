@@ -6,9 +6,8 @@ const Social = () => {
     <ul className="flex flex-row justify-center items-center gap-x-6">
       <li>
         <Link href={"https://x.com/home?lang=ja"}>
-          <X size={24}>
-            <span className="sr-only">Facebook</span>
-          </X>
+          <X size={24} />
+          <span className="sr-only">Facebook</span>
         </Link>
       </li>
       <li>

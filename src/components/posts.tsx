@@ -16,7 +16,11 @@ const Posts: FC<Props> = ({ posts }) => {
             <Link href={`/blog/${slug}`}>
               <figure>
                 <Image
-                  src={eyecatch}
+                  src={
+                    eyecatch
+                      ? `https://ooegbiekzxzcmmphylsv.supabase.co/storage/v1/object/public/thumbnails/${eyecatch}`
+                      : "/images/eyecatch.jpg"
+                  }
                   alt=""
                   width={576}
                   height={288}

@@ -1,5 +1,6 @@
 import Layout from "@/components/layout";
 import { Category } from "@/styles/types/blog";
+
 import {
   insertCategory,
   insertPost,
@@ -16,9 +17,40 @@ const Page = () => {
   const [postBody, setPostBody] = useState("");
   const [postEyecatchUrl, setPostEyecatchUrl] = useState("");
 
-  const onChangePostTitle = (e: ChangeEvent<HTMLInputElement>) => {
+  const fetchCategories = async () => {
+    const data = await selectCategories();
+    setCategories([...data]);
+    setCategoryId(data.length === 0 ? 0 : data[0].id);
+  };
+
+  const onChangeCategoryName = (e: ChangeEvent<HTMLInputElement>) => {
+    setCategoryName(e.target.value);
+  };
+
+  const onSubmitInsertCategory = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (categoryName.length === 0) {
+      return;
+    }
+    insertCategory(categoryName);
+    setCategoryName("");
+    fetchCategories();
+  };
+
+  useEffect(() => {
+    if (categoryName.length === 0) {
+      fetchCategories();
+    }
+  }, [categoryName]);
+
+  const onChangeCategoryId = (e: ChangeEvent<HTMLSelectElement>) => {
+    setCategoryId(Number(e.target.value));
+  };
+
+  const onChangePosttitle = (e: ChangeEvent<HTMLInputElement>) => {
     setPostTitle(e.target.value);
   };
+
   const onChangePostBody = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setPostBody(e.target.value);
   };
@@ -28,6 +60,7 @@ const Page = () => {
       setPostEyecatchUrl("");
       return;
     }
+
     const file = e.target.files[0];
     const eyecatchUrl = await uploadEyecatchImage(file);
     if (typeof eyecatchUrl === "string") {
@@ -42,8 +75,8 @@ const Page = () => {
     if (
       postTitle.length === 0 ||
       postBody.length === 0 ||
-      postEyecatchUrl.length === 0 ||
-      categoryId === 0
+      categoryId === 0 ||
+      postEyecatchUrl.length === 0
     ) {
       return;
     }
@@ -57,35 +90,10 @@ const Page = () => {
       setPostTitle("");
       setPostBody("");
       setPostEyecatchUrl("");
-      setCategoryId(categories.length === 0 ? 0 : categories[0].id);
+      setCategoryId(categories.length === 0 ? 0 : 1);
     } else {
       alert("記事の投稿に失敗しました");
     }
-  };
-
-  const fetchCategories = async () => {
-    const data = await selectCategories();
-    setCategories([...data]);
-    setCategoryId(data.length === 0 ? 0 : data[0].id);
-  };
-
-  const onChangeCategoryName = (e: ChangeEvent<HTMLInputElement>) => {
-    setCategoryName(e.target.value);
-  };
-  const onSubmitInsertCategory = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (categoryName.length === 0) return;
-    await insertCategory(categoryName);
-    setCategoryName("");
-    await fetchCategories();
-  };
-
-  useEffect(() => {
-    fetchCategories();
-  }, []);
-
-  const onChangeCategoryId = (e: ChangeEvent<HTMLSelectElement>) => {
-    setCategoryId(Number(e.target.value));
   };
 
   return (
@@ -100,8 +108,9 @@ const Page = () => {
                 type="text"
                 id="post-title"
                 value={postTitle}
-                onChange={onChangePostTitle}
+                onChange={onChangePosttitle}
               />
+              {/* ↑↑value属性とonChange属性の追加↑↑ */}
             </div>
             <div className="flex flex-col">
               <label htmlFor="post-body">Post Body</label>
@@ -110,10 +119,15 @@ const Page = () => {
                 value={postBody}
                 onChange={onChangePostBody}
               ></textarea>
+              {/* ↑↑value属性とonChange属性の追加↑↑ */}
             </div>
             <div className="flex flex-col">
               <label htmlFor="post-category">Post Category</label>
-              <select id="post-category" onChange={onChangeCategoryId}>
+              <select
+                id="post-category"
+                onChange={onChangeCategoryId}
+                value={categoryId}
+              >
                 {categories.map(({ id, name }) => (
                   <option value={id} key={id}>
                     {name}
@@ -129,6 +143,7 @@ const Page = () => {
                 id="post-eyecatch"
                 onChange={onChangeEyecatch}
               />
+              {/* ↑↑onChange属性の追加↑↑ */}
             </div>
             <div className="flex justify-center">
               <input

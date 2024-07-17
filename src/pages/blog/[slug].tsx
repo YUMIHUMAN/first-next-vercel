@@ -7,13 +7,7 @@ import TwoColumnLayout from "@/components/two-column-layout";
 import { Post } from "@/styles/types/blog";
 import { selectPost } from "@/utils/supbase";
 import { useRouter } from "next/router";
-import {
-  Children,
-  ClassAttributes,
-  HTMLAttributes,
-  useEffect,
-  useState,
-} from "react";
+import { ClassAttributes, HTMLAttributes, useEffect, useState } from "react";
 import ReactMarkdown, { ExtraProps } from "react-markdown";
 import remarkGfm from "remark-gfm";
 
