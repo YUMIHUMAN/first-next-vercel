@@ -1,13 +1,17 @@
-import Logo from "./logo";
-import Social from "./social";
+import { FC } from "react";
 
-const Footer = () => {
+const footer_Style: React.CSSProperties = {
+  backgroundColor: "#000000", // キャメルケースと文字列で指定
+  color: "white", // 文字列で指定
+  textAlign: "center", // キャメルケースと文字列で指定
+  padding: "1rem", // 文字列で指定
+  width: "100%", // 文字列で指定
+};
+
+const Footer: FC = () => {
   return (
-    <div className="flex justify-center items-center py-24 lg:py-16 bg-slate-200">
-      <div className="container flex flex-col lg:flex-row justify-center lg:justify-between items-center gap-8 max-w-5xl">
-        <Logo />
-        <Social />
-      </div>
+    <div style={footer_Style}>
+      <p>&copy; 2024 Morijyobi-studio.</p>
     </div>
   );
 };
